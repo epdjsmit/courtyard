@@ -39,41 +39,6 @@ jQuery(document).ready(function() {
 		jQuery('.pt-header-sep').removeClass('pt-header-sep-hide');
 	}
 
-	var courtyard_window_width = jQuery(window).width();
-
-	var courtyard_services_slider_num = 3;
-	var courtyard_services_slider_per_col = 2;
-
-	if ( courtyard_window_width <= 992 ) {
-		var courtyard_services_slider_num = 2;
-	}
-
-	if ( courtyard_window_width <= 580 ) {
-		var courtyard_services_slider_per_col = 1;
-		var courtyard_services_slider_num = 1;
-	}
-
-	var pt_services_slider = new Swiper('.pt-services-slider', {
-		nextButton: '.pt-services-more .pt-arrow-right',
-		prevButton: '.pt-services-more .pt-arrow-left',
-		spaceBetween: 0,
-		preventClicks: false,
-		slidesPerView: courtyard_services_slider_num,
-		slidesPerColumn: courtyard_services_slider_per_col,
-		touchEventsTarget: 'swiper-wrapper',
-		speed: 800
-	});
-
-	var pt_rooms_slider = new Swiper('.pt-rooms-slider', {
-		nextButton: '.pt-rooms-more .pt-arrow-right',
-		prevButton: '.pt-rooms-more .pt-arrow-left',
-		spaceBetween: 30,
-		preventClicks: false,
-		slidesPerView: courtyard_services_slider_num,
-		touchEventsTarget: 'swiper-wrapper',
-		speed: 800
-	});
-
 	// Back to Top
 	if (jQuery('#back-to-top').length) {
 		var scrollTrigger = 500, // px
@@ -100,6 +65,20 @@ jQuery(document).ready(function() {
 
 jQuery(window).load(function() {
 	if(typeof Swiper === 'function'){
+		var courtyard_window_width = jQuery(window).width();
+
+		var courtyard_services_slider_num = 3;
+		var courtyard_services_slider_per_col = 2;
+
+		if ( courtyard_window_width <= 992 ) {
+			var courtyard_services_slider_num = 2;
+		}
+
+		if ( courtyard_window_width <= 580 ) {
+			var courtyard_services_slider_per_col = 1;
+			var courtyard_services_slider_num = 1;
+		}
+
 		// Hero Slider
 		jQuery('.pt-image-slider-section').each(function(index, element){
 			var container  = jQuery(this).find('.pt-hero-image-slider');
@@ -143,6 +122,41 @@ jQuery(window).load(function() {
 					jQuery('.swiper-slide').eq(next_slide).find('.pt-hero-image-cont article').hide();
 					jQuery('.swiper-slide').eq(previous_slide).find('.pt-hero-image-cont article').hide();
 				}
+			});
+		});
+
+		// Service Slider
+		jQuery('.pt-service-section').each(function(index, element){
+			var container  = jQuery(this).find('.pt-services-slider');
+			var nextButton = jQuery(this).find('.pt-services-more .pt-arrow-right');
+			var prevButton = jQuery(this).find('.pt-services-more .pt-arrow-left');
+
+			var pt_services_slider = new Swiper(container, {
+				nextButton: nextButton,
+				prevButton: prevButton,
+				spaceBetween: 0,
+				preventClicks: false,
+				slidesPerView: courtyard_services_slider_num,
+				slidesPerColumn: courtyard_services_slider_per_col,
+				touchEventsTarget: 'swiper-wrapper',
+				speed: 800
+			});
+		});
+
+		// Room Slider
+		jQuery('.pt-rooms-section').each(function(index, element){
+			var container  = jQuery(this).find('.pt-rooms-slider');
+			var nextButton = jQuery(this).find('.pt-rooms-more .pt-arrow-right');
+			var prevButton = jQuery(this).find('.pt-rooms-more .pt-arrow-left');
+
+			var pt_rooms_slider = new Swiper(container, {
+				nextButton: nextButton,
+				prevButton: prevButton,
+				spaceBetween: 30,
+				preventClicks: false,
+				slidesPerView: courtyard_services_slider_num,
+				touchEventsTarget: 'swiper-wrapper',
+				speed: 800
 			});
 		});
 	}

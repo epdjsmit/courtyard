@@ -15,6 +15,7 @@ class courtyard_rooms_widget extends WP_Widget {
         (array) $instance, array(
           'title'             => '',
           'sub_title'         => '',
+          'room_limit'        => '5',
           'button_text'       => esc_html__( 'view all rooms', 'courtyard'),
           'button_url'        => '#',
           'background_color'  => '',
@@ -62,6 +63,23 @@ class courtyard_rooms_widget extends WP_Widget {
           <div class="clear"></div>
 
       </div><!-- .pt-admin-input-wrap -->
+
+      <div class="pt-admin-input-wrap">
+
+          <div class="pt-admin-input-label">
+              <label
+              for="<?php echo $this->get_field_id('room_limit'); ?>"><?php esc_html_e('Room Limit', 'courtyard'); ?></label>
+          </div><!-- .pt-admin-input-label -->
+
+          <div class="pt-admin-input-holder">
+              <input type="number" min="1" max="50" id="<?php echo $this->get_field_id('room_limit'); ?>"
+                 name="<?php echo $this->get_field_name('room_limit'); ?>"
+                 value="<?php echo esc_attr($instance['room_limit']); ?>">
+          </div><!-- .pt-admin-input-holder -->
+
+          <div class="clear"></div>
+
+        </div><!-- .pt-admin-input-wrap -->
 
       <div class="pt-admin-input-wrap">
 
@@ -117,6 +135,7 @@ class courtyard_rooms_widget extends WP_Widget {
       $instance = $old_instance;
       
       $instance['title']              = sanitize_text_field( $new_instance['title'] );
+      $instance['room_limit']         = absint( $new_instance['room_limit'] );
       $instance['button_text']        = sanitize_text_field( $new_instance['button_text'] );
       $instance['button_url']         = esc_url_raw( $new_instance['button_url'] );
       $instance['background_color']   = sanitize_text_field( $new_instance['background_color'] );
@@ -130,26 +149,32 @@ class courtyard_rooms_widget extends WP_Widget {
     function widget( $args, $instance ) {
       ob_start();
       extract( $args );
-      global $post;
       
+      global $post, $duplicate_posts;      
       $title              = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '');
+      $pt_room_limit      = isset( $instance['room_limit'] ) ? $instance['room_limit'] : '5';
       $sub_title          = isset( $instance['sub_title'] ) ? $instance['sub_title'] : '';
       $button_text        = isset( $instance['button_text'] ) ? $instance['button_text'] : '';
       $button_url         = isset( $instance['button_url'] ) ? $instance['button_url'] : '';
       $background_color   = isset( $instance['background_color'] ) ? $instance['background_color'] : null;
 
+      $pt_room_pages = array();
+      $pt_pages = get_pages();
+      // get the pages associated with Service Template.
+      foreach ( $pt_pages as $pt_page ) {
+          $page_id = $pt_page->ID;
+          $template_name = get_post_meta( $page_id, '_wp_page_template', true );
+          if( $template_name == 'page-templates/template-rooms.php' && !in_array( $page_id , $duplicate_posts ) ) {
+              array_push( $pt_room_pages, $page_id );
+          }
+      }
+
       $get_featured_pages = new WP_Query( array(
-        'no_found_rows'   => true,
-        'post_status'     => 'publish',
-        'posts_per_page'  => intval( 5 ),
-        'post_type'       =>  array( 'page' ),
-        'orderby'         => array( 'menu_order' => 'ASC', 'date' => 'DESC' ),
-        'meta_query' => array(
-            array(
-              'key' => '_wp_page_template',
-              'value' => 'page-templates/template-rooms.php'
-            )
-          )
+          'post_status'           => 'publish',
+          'posts_per_page'        => $pt_room_limit,
+          'post_type'             =>  array( 'page' ),
+          'post__in'              => $pt_room_pages,
+          'orderby'               => array( 'menu_order' => 'ASC', 'date' => 'DESC' )
       ) );
 
       $countPosts = intval( $get_featured_pages->post_count );
@@ -186,6 +211,7 @@ class courtyard_rooms_widget extends WP_Widget {
                           <?php if ( $get_featured_pages->have_posts() ) : ?>
 
                               <?php while( $get_featured_pages->have_posts() ) : $get_featured_pages->the_post();
+                                  $duplicate_posts[] = $post->ID;
                                   $image_id     = get_post_thumbnail_id();
                                   $image_path   = wp_get_attachment_image_src( $image_id, 'courtyard-400x260', true );
                                   $image_alt    = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
@@ -219,13 +245,17 @@ class courtyard_rooms_widget extends WP_Widget {
                           <?php endif; ?>
                       </div><!-- .swiper-wrapper -->
 
-                      <?php if ( !empty( $button_text ) && $countPosts >= 3 ) : ?>
+                      <?php if ( !empty( $button_text ) ) : ?>
 
                           <div class="pt-rooms-more">
                               <div class="pt-rooms-more-holder">
+                                <?php if ( $countPosts > 3 ) : ?>
                                   <i class="pt-arrow-left transition35"></i>
-                                  <a href="<?php echo esc_url( $button_url ); ?>" class="transition35"><?php echo esc_html( $button_text ); ?></a>
+                                <?php endif; ?>
+                                <a href="<?php echo esc_url( $button_url ); ?>" class="transition35"><?php echo esc_html( $button_text ); ?></a>
+                                <?php if ( $countPosts > 3 ) : ?>
                                   <i class="pt-arrow-right transition35"></i>
+                                <?php endif; ?> 
                               </div><!-- .pt-rooms-more-holder -->
                           </div><!-- .pt-services-more -->
 
