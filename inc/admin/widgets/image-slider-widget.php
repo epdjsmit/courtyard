@@ -51,7 +51,7 @@ class courtyard_image_slider_widget extends WP_Widget
 
                 <div class="pt-admin-input-label">
                     <label
-                    for="<?php echo $this->get_field_id('slide_no'); ?>"><?php esc_html_e('Slide Limit', 'courtyard'); ?></label>
+                    for="<?php echo $this->get_field_id('slide_no'); ?>"><?php esc_html_e('Limit', 'courtyard'); ?></label>
                 </div><!-- .pt-admin-input-label -->
 
                 <div class="pt-admin-input-holder">

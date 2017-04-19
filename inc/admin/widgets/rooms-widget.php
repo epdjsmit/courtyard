@@ -68,7 +68,7 @@ class courtyard_rooms_widget extends WP_Widget {
 
           <div class="pt-admin-input-label">
               <label
-              for="<?php echo $this->get_field_id('room_limit'); ?>"><?php esc_html_e('Room Limit', 'courtyard'); ?></label>
+              for="<?php echo $this->get_field_id('room_limit'); ?>"><?php esc_html_e('Limit', 'courtyard'); ?></label>
           </div><!-- .pt-admin-input-label -->
 
           <div class="pt-admin-input-holder">

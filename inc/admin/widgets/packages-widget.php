@@ -18,6 +18,7 @@ class courtyard_packages_widget extends WP_Widget
             (array)$instance, array(
                 'title' => '',
                 'sub_title' => '',
+                'package_limit' => '5',
                 'background_color' => '',
             )
         );
@@ -70,6 +71,23 @@ class courtyard_packages_widget extends WP_Widget
 
                 <div class="pt-admin-input-label">
                     <label
+                    for="<?php echo $this->get_field_id('package_limit'); ?>"><?php esc_html_e('Limit', 'courtyard'); ?></label>
+                </div><!-- .pt-admin-input-label -->
+
+                <div class="pt-admin-input-holder">
+                    <input type="number" min="1" max="50" id="<?php echo $this->get_field_id('package_limit'); ?>"
+                       name="<?php echo $this->get_field_name('package_limit'); ?>"
+                       value="<?php echo esc_attr($instance['package_limit']); ?>">
+                </div><!-- .pt-admin-input-holder -->
+
+                <div class="clear"></div>
+ 
+            </div><!-- .pt-admin-input-wrap -->
+
+            <div class="pt-admin-input-wrap">
+
+                <div class="pt-admin-input-label">
+                    <label
                     for="<?php echo $this->get_field_id('background_color'); ?>"><?php esc_html_e('Color', 'courtyard'); ?></label>
                 </div><!-- .pt-admin-input-label -->
 
@@ -93,6 +111,7 @@ class courtyard_packages_widget extends WP_Widget
         $instance = $old_instance;
 
         $instance['title'] = sanitize_text_field($new_instance['title']);
+        $instance['package_limit'] = absint($new_instance['package_limit']);
         $instance['background_color'] = sanitize_text_field($new_instance['background_color']);
         if ( current_user_can( 'unfiltered_html' ) )
             $instance['sub_title'] = $new_instance['sub_title'];
@@ -105,25 +124,31 @@ class courtyard_packages_widget extends WP_Widget
     {
         ob_start();
         extract($args);
-        global $post;
 
+        global $post, $duplicate_posts;
         $title = apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : '');
+        $pt_package_limit = isset($instance['package_limit']) ? $instance['package_limit'] : '';
         $sub_title = isset($instance['sub_title']) ? $instance['sub_title'] : '';
         $background_color = isset($instance['background_color']) ? $instance['background_color'] : null;
 
-        $get_featured_pages = new WP_Query(array(
-            'no_found_rows' => true,
-            'post_status' => 'publish',
-            'posts_per_page' => intval(5),
-            'post_type' => array('page'),
-            'orderby' => array('menu_order' => 'ASC', 'date' => 'DESC'),
-            'meta_query' => array(
-                array(
-                    'key' => '_wp_page_template',
-                    'value' => 'page-templates/template-packages.php'
-                )
-            )
-        ));
+        $pt_package_pages = array();
+        $pt_pages = get_pages();
+        // get the pages associated with Service Template.
+        foreach ( $pt_pages as $pt_page ) {
+            $page_id = $pt_page->ID;
+            $template_name = get_post_meta( $page_id, '_wp_page_template', true );
+            if( $template_name == 'page-templates/template-packages.php' && !in_array( $page_id , $duplicate_posts ) ) {
+                array_push( $pt_package_pages, $page_id );
+            }
+        }
+
+        $get_featured_pages = new WP_Query( array(
+            'post_status'           => 'publish',
+            'posts_per_page'        => $pt_package_limit,
+            'post_type'             =>  array( 'page' ),
+            'post__in'              => $pt_package_pages,
+            'orderby'               => array( 'menu_order' => 'ASC', 'date' => 'DESC' )
+        ) );
 
         $inline_style = '';
 
@@ -155,6 +180,7 @@ class courtyard_packages_widget extends WP_Widget
                         <?php if ($get_featured_pages->have_posts()) : ?>
 
                             <?php while ($get_featured_pages->have_posts()) : $get_featured_pages->the_post();
+                                $duplicate_posts[] = $post->ID;
                                 $image_id       = get_post_thumbnail_id();
                                 $image_path     = wp_get_attachment_image_src( $image_id, 'courtyard-400x300', true );
                                 $image_alt      = get_post_meta( $image_id, '_wp_attachment_image_alt', true );

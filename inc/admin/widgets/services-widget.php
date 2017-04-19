@@ -67,7 +67,7 @@ class courtyard_service_widget extends WP_Widget {
 
                 <div class="pt-admin-input-label">
                     <label
-                    for="<?php echo $this->get_field_id('service_limit'); ?>"><?php esc_html_e('Service Limit', 'courtyard'); ?></label>
+                    for="<?php echo $this->get_field_id('service_limit'); ?>"><?php esc_html_e('Limit', 'courtyard'); ?></label>
                 </div><!-- .pt-admin-input-label -->
 
                 <div class="pt-admin-input-holder">
