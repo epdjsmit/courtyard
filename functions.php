@@ -6,7 +6,6 @@
  *
  * @package courtyard
  */
-
 if ( ! function_exists( 'courtyard_setup' ) ) :
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -161,3 +160,6 @@ require get_template_directory() . '/inc/functions.php';
  * Load woocommerce functions file
  */
 require get_template_directory() . '/woocommerce/woocommerce.php';
+
+global $duplicate_posts;
+$duplicate_posts = array();

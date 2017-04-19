@@ -17,6 +17,7 @@ class courtyard_image_slider_widget extends WP_Widget
         $instance = wp_parse_args(
             (array)$instance, array(
                 'title' => '',
+                'slide_no' => '4',
             )
         );
         ?>
@@ -47,6 +48,23 @@ class courtyard_image_slider_widget extends WP_Widget
             </div><!-- .pt-admin-input-wrap -->
 
             <div class="pt-admin-input-wrap">
+
+                <div class="pt-admin-input-label">
+                    <label
+                    for="<?php echo $this->get_field_id('slide_no'); ?>"><?php esc_html_e('Slide Limit', 'courtyard'); ?></label>
+                </div><!-- .pt-admin-input-label -->
+
+                <div class="pt-admin-input-holder">
+                    <input type="number" min="1" max="30" id="<?php echo $this->get_field_id('slide_no'); ?>"
+                       name="<?php echo $this->get_field_name('slide_no'); ?>"
+                       value="<?php echo esc_attr($instance['slide_no']); ?>">
+                </div><!-- .pt-admin-input-holder -->
+
+                <div class="clear"></div>
+ 
+            </div><!-- .pt-admin-input-wrap -->
+
+            <div class="pt-admin-input-wrap">
                 <p>
                     <em><?php esc_html_e('Info: only page have thumbnail will show in image slide.', 'courtyard'); ?></em>
                 </p>
@@ -60,6 +78,7 @@ class courtyard_image_slider_widget extends WP_Widget
         $instance = $old_instance;
 
         $instance['title'] = sanitize_text_field($new_instance['title']);
+        $instance['slide_no'] = absint($new_instance['slide_no']);
         return $instance;
     }
 
@@ -67,20 +86,29 @@ class courtyard_image_slider_widget extends WP_Widget
         ob_start();
         extract($args);
 
+        global $post, $duplicate_posts;
         $title = apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : '');
-        $get_featured_pages = new WP_Query(array(
-            'no_found_rows' => true,
-            'post_status' => 'publish',
-            'posts_per_page' => intval(5),
-            'post_type' => array('page'),
-            'orderby' => array('menu_order' => 'ASC', 'date' => 'DESC'),
-            'meta_query' => array(
-                array(
-                    'key' => '_wp_page_template',
-                    'value' => 'page-templates/template-image-slider.php'
-                )
-            )
-        ));
+        $pt_slide_limit = isset($instance['slide_no']) ? $instance['slide_no'] : '4';
+
+        $pt_slide_pages = array();
+        $pt_pages = get_pages();
+        // get the pages associated with Hero Image Template.
+        foreach ( $pt_pages as $pt_page ) {
+            $page_id = $pt_page->ID;
+            $template_name = get_post_meta( $page_id, '_wp_page_template', true );
+            if( $template_name == 'page-templates/template-image-slider.php' && !in_array( $page_id , $duplicate_posts ) ) {
+                array_push( $pt_slide_pages, $page_id );
+            }
+        }
+
+        $get_featured_pages = new WP_Query( array(
+            'post_status'           => 'publish',
+            'posts_per_page'        => $pt_slide_limit,
+            'post_type'             =>  array( 'page' ),
+            'post__in'              => $pt_slide_pages,
+            'orderby'               => array( 'menu_order' => 'ASC', 'date' => 'DESC' )
+        ) );
+
         $countPosts = intval( $get_featured_pages->post_count );
 
         $data_attr = '';
@@ -94,8 +122,9 @@ class courtyard_image_slider_widget extends WP_Widget
         
             <div class="swiper-wrapper">
 
-                <?php if ($get_featured_pages->have_posts()) : ?>
+                <?php if ($get_featured_pages->have_posts() && !empty( $pt_slide_pages ) ) : ?>
                     <?php while ($get_featured_pages->have_posts()) : $get_featured_pages->the_post();
+                        $duplicate_posts[] = $post->ID;
                         $image_id = get_post_thumbnail_id();
                         $image_path = wp_get_attachment_image_src($image_id, 'courtyard-1920x1080', true);
                         $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
