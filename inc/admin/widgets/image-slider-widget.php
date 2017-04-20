@@ -18,12 +18,14 @@ class courtyard_image_slider_widget extends WP_Widget
             (array)$instance, array(
                 'title' => '',
                 'slide_no' => '4',
+                'scroll_down' => '0',
             )
         );
+        $activate_bounce = $instance['scroll_down'] ? 'checked="checked"' : '';
         ?>
         <div class="pt-image-slider">
             <div class="pt-admin-input-wrap">
-                <p><?php esc_html_e('This widget displays all pages of Hero Image Slider Template.', 'courtyard'); ?></p>
+                <p><?php esc_html_e('This widget displays pages of Hero Image Slider Template.', 'courtyard'); ?></p>
                 <p>
                     <em><?php esc_html_e('Tip: to rearrange the image slider order, edit each image slider page and add a value in Page Attributes > Order', 'courtyard'); ?></em>
                 </p>
@@ -51,13 +53,33 @@ class courtyard_image_slider_widget extends WP_Widget
 
                 <div class="pt-admin-input-label">
                     <label
-                    for="<?php echo $this->get_field_id('slide_no'); ?>"><?php esc_html_e('Limit', 'courtyard'); ?></label>
+                    for="<?php echo $this->get_field_id('slide_no'); ?>"><?php esc_html_e('Count', 'courtyard'); ?></label>
                 </div><!-- .pt-admin-input-label -->
 
                 <div class="pt-admin-input-holder">
                     <input type="number" min="1" max="30" id="<?php echo $this->get_field_id('slide_no'); ?>"
                        name="<?php echo $this->get_field_name('slide_no'); ?>"
                        value="<?php echo esc_attr($instance['slide_no']); ?>">
+                    <em><?php esc_html_e('Number of slide to display.', 'courtyard'); ?></em>
+                </div><!-- .pt-admin-input-holder -->
+
+                <div class="clear"></div>
+ 
+            </div><!-- .pt-admin-input-wrap -->
+
+            <div class="pt-admin-input-wrap">
+
+                <div class="pt-admin-input-label">
+                    <label
+                    for="<?php echo $this->get_field_id('scroll_down'); ?>"><?php esc_html_e('Scroll Down', 'courtyard'); ?></label>
+                </div><!-- .pt-admin-input-label -->
+
+                <div class="pt-admin-input-holder">
+                    <input type="checkbox" <?php echo $activate_bounce; ?>
+                       id="<?php echo $this->get_field_id('scroll_down'); ?>"
+                       name="<?php echo $this->get_field_name('scroll_down'); ?>"
+                       value="<?php echo esc_attr($instance['scroll_down']); ?>">
+                    <p><em><?php esc_html_e('Check to disable the Scroll Down Arrow from slider.', 'courtyard'); ?></em></p>
                 </div><!-- .pt-admin-input-holder -->
 
                 <div class="clear"></div>
@@ -79,6 +101,7 @@ class courtyard_image_slider_widget extends WP_Widget
 
         $instance['title'] = sanitize_text_field($new_instance['title']);
         $instance['slide_no'] = absint($new_instance['slide_no']);
+        $instance['scroll_down'] = isset($new_instance['scroll_down']) ? 1 : 0;
         return $instance;
     }
 
@@ -89,6 +112,7 @@ class courtyard_image_slider_widget extends WP_Widget
         global $post, $duplicate_posts;
         $title = apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : '');
         $pt_slide_limit = isset($instance['slide_no']) ? $instance['slide_no'] : '4';
+        $pt_scroll_down = !empty($instance['scroll_down']) ? 1 : 0;
 
         $pt_slide_pages = array();
         $pt_pages = get_pages();
@@ -179,7 +203,11 @@ class courtyard_image_slider_widget extends WP_Widget
 
             <?php endif; ?>
 
-            <i class="pt-arrow-down bounce transition5"></i>
+            <?php if ( $pt_scroll_down != '1' ) : ?>
+
+                <i class="pt-arrow-down bounce transition5"></i>
+
+            <?php endif; ?>
         </div><!-- .pt-image-slider-section -->
 
         <div class="pt-hero-scroll-to"></div>
