@@ -142,11 +142,12 @@ class courtyard_image_slider_widget extends WP_Widget
 
         echo $args['before_widget']; ?>
 
-        <div class="swiper-container pt-hero-image-slider" <?php echo $data_attr; ?>>
-        
-            <div class="swiper-wrapper">
+        <?php if ( !empty( $pt_slide_pages ) ) : ?>
 
-                <?php if ($get_featured_pages->have_posts() && !empty( $pt_slide_pages ) ) : ?>
+            <div class="swiper-container pt-hero-image-slider" <?php echo $data_attr; ?>>
+            
+                <div class="swiper-wrapper">
+
                     <?php while ($get_featured_pages->have_posts()) : $get_featured_pages->the_post();
                         $duplicate_posts[] = $post->ID;
                         $image_id = get_post_thumbnail_id();
@@ -190,27 +191,28 @@ class courtyard_image_slider_widget extends WP_Widget
                     <?php endwhile;
                     // Reset Post Data
                     wp_reset_postdata(); ?>
+
+                </div><!-- .swiper-wrapper -->
+
+                <?php if ( $countPosts > 1 ) : ?>
+
+                <nav class="pt-hero-slider-nav">
+                    <i class="pt-arrow-left transition35"></i>
+                    <i class="pt-arrow-right transition35"></i>
+                </nav><!-- .pt-services-more -->
+
                 <?php endif; ?>
 
-            </div><!-- .swiper-wrapper -->
+                <?php if ( $pt_scroll_down != '1' ) : ?>
 
-            <?php if ( $countPosts > 1 ) : ?>
+                    <i class="pt-arrow-down bounce transition5"></i>
 
-            <nav class="pt-hero-slider-nav">
-                <i class="pt-arrow-left transition35"></i>
-                <i class="pt-arrow-right transition35"></i>
-            </nav><!-- .pt-services-more -->
+                <?php endif; ?>
+            </div><!-- .pt-image-slider-section -->
 
-            <?php endif; ?>
+            <div class="pt-hero-scroll-to"></div>
 
-            <?php if ( $pt_scroll_down != '1' ) : ?>
-
-                <i class="pt-arrow-down bounce transition5"></i>
-
-            <?php endif; ?>
-        </div><!-- .pt-image-slider-section -->
-
-        <div class="pt-hero-scroll-to"></div>
+        <?php endif; ?>
 
         <?php echo $args['after_widget'];
         ob_end_flush();

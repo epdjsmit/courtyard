@@ -204,11 +204,11 @@ class courtyard_service_widget extends WP_Widget {
                         <?php endif; ?>
                     </div><!-- .col-md-12 -->
 
-                    <div class="col-md-12">
-                        <div class="swiper-container pt-services-slider">
-                            <div class="swiper-wrapper">
+                    <?php if ( !empty( $pt_service_pages ) ) : ?>
 
-                                <?php if ($get_featured_pages->have_posts()) : ?>
+                        <div class="col-md-12">
+                            <div class="swiper-container pt-services-slider">
+                                <div class="swiper-wrapper">
 
                                     <?php while ($get_featured_pages->have_posts()) : $get_featured_pages->the_post();
                                         $duplicate_posts[] = $post->ID;
@@ -249,26 +249,27 @@ class courtyard_service_widget extends WP_Widget {
                                     // Reset Post Data
                                     wp_reset_postdata(); ?>
 
+                                </div><!-- .swiper-wrapper -->
+
+                                <?php if ( !empty( $button_text ) ) : ?>
+
+                                    <div class="pt-services-more">
+                                        <div class="pt-services-more-holder">
+                                            <?php if ( ( $countPosts > 3 && $countPosts < 6 ) || ( $countPosts > 6 ) ) : ?>
+                                                <i class="pt-arrow-left transition35"></i>
+                                            <?php endif; ?>
+                                            <a href="<?php echo esc_url( $button_url ); ?>" class="transition35"><?php echo esc_html( $button_text ); ?></a>
+                                            <?php if ( ( $countPosts > 3 && $countPosts < 6 ) || ( $countPosts > 6 ) ) : ?>
+                                                <i class="pt-arrow-right transition35"></i>
+                                            <?php endif; ?>
+                                        </div><!-- .pt-services-more-holder -->
+                                    </div><!-- .pt-services-more -->
+
                                 <?php endif; ?>
-                            </div><!-- .swiper-wrapper -->
-
-                            <?php if ( !empty( $button_text ) ) : ?>
-
-                                <div class="pt-services-more">
-                                    <div class="pt-services-more-holder">
-                                        <?php if ( ( $countPosts > 3 && $countPosts < 6 ) || ( $countPosts > 6 ) ) : ?>
-                                            <i class="pt-arrow-left transition35"></i>
-                                        <?php endif; ?>
-                                        <a href="<?php echo esc_url( $button_url ); ?>" class="transition35"><?php echo esc_html( $button_text ); ?></a>
-                                        <?php if ( ( $countPosts > 3 && $countPosts < 6 ) || ( $countPosts > 6 ) ) : ?>
-                                            <i class="pt-arrow-right transition35"></i>
-                                        <?php endif; ?>
-                                    </div><!-- .pt-services-more-holder -->
-                                </div><!-- .pt-services-more -->
-
-                            <?php endif; ?>
-                        </div><!-- .swiper-container -->
-                    </div><!-- .col-md-12 -->
+                            </div><!-- .swiper-container -->
+                        </div><!-- .col-md-12 -->
+                    
+                    <?php endif; ?>
                 </div><!-- .row -->
             </div><!-- .container -->
         </div><!-- .pt-services-sec -->

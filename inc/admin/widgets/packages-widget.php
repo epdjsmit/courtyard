@@ -174,13 +174,9 @@ class courtyard_packages_widget extends WP_Widget
                         </header>
                     </div><!-- .col-md-12 -->
 
-                    <div class="col-md-12">
+                    <?php if ( !empty( $pt_package_pages ) ) : $pt_count = 1; ?>
 
-                        <?php if ( $get_featured_pages->have_posts() && !empty( $pt_package_pages ) ) : ?>
-
-                            <?php 
-                            $pt_count = 1;
-                            ?>
+                        <div class="col-md-12">
 
                             <?php while ($get_featured_pages->have_posts()) : $get_featured_pages->the_post();
                                 $duplicate_posts[] = $post->ID;
@@ -216,9 +212,10 @@ class courtyard_packages_widget extends WP_Widget
                             // Reset Post Data
                             wp_reset_postdata(); ?>
 
-                        <?php endif; ?>
+                        </div><!-- .col-md-12 -->
 
-                    </div><!-- .col-md-12 -->
+                    <?php endif; ?>
+                    
                 </div><!-- .row -->
             </div><!-- .container -->
         </div><!-- .pt-holiday-packages-sec -->
