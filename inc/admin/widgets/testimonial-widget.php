@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Rooms Widget section.
+ * Testimonials Widget section.
  */
-class courtyard_rooms_widget extends WP_Widget {
+class Courtyard_Testimonials_Widget extends WP_Widget {
   function __construct() {
-    $widget_ops = array( 'classname' => 'pt-rooms-section', 'description' => esc_html__( 'Display some pages as rooms.', 'courtyard' ) );
+    $widget_ops = array( 'classname' => 'pt-testimonials-section', 'description' => esc_html__( 'Display some pages as testimonials.', 'courtyard' ) );
     $control_ops = array( 'width' => 200, 'height' =>250 );
-    parent::__construct( false, $name = esc_html__( 'PT: Rooms', 'courtyard' ), $widget_ops, $control_ops);
+    parent::__construct( false, $name = esc_html__( 'PT: Testimonials', 'courtyard' ), $widget_ops, $control_ops);
   }
 
     function form( $instance ) {
@@ -15,17 +15,17 @@ class courtyard_rooms_widget extends WP_Widget {
         (array) $instance, array(
           'title'             => '',
           'sub_title'         => '',
-          'room_limit'        => '5',
-          'button_text'       => esc_html__( 'view all rooms', 'courtyard'),
+          'testimonial_limit'        => '5',
+          'button_text'       => esc_html__( 'view all', 'courtyard'),
           'button_url'        => '#',
           'background_color'  => '',
         )
       );
       ?>
 
-      <div class="pt-room">
+      <div class="pt-testimonial">
         <div class="pt-admin-input-wrap">
-          <p><?php esc_html_e('This widget displays all pages related to Single Room Template.', 'courtyard'); ?></p>
+          <p><?php esc_html_e('This widget displays all pages related to Single Testimonial Template.', 'courtyard'); ?></p>
           <p><em><?php esc_html_e('Tip: to rearrange the room order, edit each room page and add a value in Page Attributes > Order', 'courtyard'); ?></em></p>
         </div><!-- .pt-admin-input-wrap -->
 
@@ -68,16 +68,15 @@ class courtyard_rooms_widget extends WP_Widget {
 
           <div class="pt-admin-input-label">
               <label
-              for="<?php echo $this->get_field_id('room_limit'); ?>"><?php esc_html_e('Count', 'courtyard'); ?></label>
+              for="<?php echo $this->get_field_id('testimonial_limit'); ?>"><?php esc_html_e('Count', 'courtyard'); ?></label>
           </div><!-- .pt-admin-input-label -->
 
           <div class="pt-admin-input-holder">
-              <input type="number" min="1" max="50" id="<?php echo $this->get_field_id('room_limit'); ?>"
-                 name="<?php echo $this->get_field_name('room_limit'); ?>"
-                 value="<?php echo esc_attr($instance['room_limit']); ?>">
-              <em><?php esc_html_e('Number of rooms to display.', 'courtyard'); ?></em>
+              <input type="number" min="1" max="50" id="<?php echo $this->get_field_id('testimonial_limit'); ?>"
+                 name="<?php echo $this->get_field_name('testimonial_limit'); ?>"
+                 value="<?php echo esc_attr($instance['testimonial_limit']); ?>">
+            <em><?php esc_html_e('Number of testimonials to display.', 'courtyard'); ?></em>
           </div><!-- .pt-admin-input-holder -->
-
           <div class="clear"></div>
 
         </div><!-- .pt-admin-input-wrap -->
@@ -129,14 +128,14 @@ class courtyard_rooms_widget extends WP_Widget {
 
       </div><!-- .pt-admin-input-wrap -->
 
-      </div><!-- .pt-room -->
+      </div><!-- .pt-testimonial -->
     <?php }
 
     function update( $new_instance, $old_instance ) {
       $instance = $old_instance;
       
       $instance['title']              = sanitize_text_field( $new_instance['title'] );
-      $instance['room_limit']         = absint( $new_instance['room_limit'] );
+      $instance['testimonial_limit']  = absint( $new_instance['testimonial_limit'] );
       $instance['button_text']        = sanitize_text_field( $new_instance['button_text'] );
       $instance['button_url']         = esc_url_raw( $new_instance['button_url'] );
       $instance['background_color']   = sanitize_text_field( $new_instance['background_color'] );
@@ -153,28 +152,28 @@ class courtyard_rooms_widget extends WP_Widget {
       
       global $post, $duplicate_posts;      
       $title              = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '');
-      $pt_room_limit      = isset( $instance['room_limit'] ) ? $instance['room_limit'] : '5';
+      $pt_testimonial_limit      = isset( $instance['testimonial_limit'] ) ? $instance['testimonial_limit'] : '5';
       $sub_title          = isset( $instance['sub_title'] ) ? $instance['sub_title'] : '';
       $button_text        = isset( $instance['button_text'] ) ? $instance['button_text'] : '';
       $button_url         = isset( $instance['button_url'] ) ? $instance['button_url'] : '';
       $background_color   = isset( $instance['background_color'] ) ? $instance['background_color'] : null;
 
-      $pt_room_pages = array();
+      $pt_testimonial_pages = array();
       $pt_pages = get_pages();
       // get the pages associated with Service Template.
       foreach ( $pt_pages as $pt_page ) {
           $page_id = $pt_page->ID;
           $template_name = get_post_meta( $page_id, '_wp_page_template', true );
-          if( $template_name == 'page-templates/template-rooms.php' && !in_array( $page_id , $duplicate_posts ) ) {
-              array_push( $pt_room_pages, $page_id );
+          if( $template_name == 'page-templates/template-testimonial.php' && !in_array( $page_id , $duplicate_posts ) ) {
+              array_push( $pt_testimonial_pages, $page_id );
           }
       }
 
       $get_featured_pages = new WP_Query( array(
           'post_status'           => 'publish',
-          'posts_per_page'        => $pt_room_limit,
+          'posts_per_page'        => $pt_testimonial_limit,
           'post_type'             =>  array( 'page' ),
-          'post__in'              => $pt_room_pages,
+          'post__in'              => $pt_testimonial_pages,
           'orderby'               => array( 'menu_order' => 'ASC', 'date' => 'DESC' )
       ) );
 
@@ -207,7 +206,7 @@ class courtyard_rooms_widget extends WP_Widget {
               </div><!-- .col-md-12 -->
 
               <div class="col-md-12">
-                  <div class="swiper-container pt-rooms-slider">
+                  <div class="swiper-container pt-testimonials-slider">
                       <div class="swiper-wrapper">
                           <?php if ( $get_featured_pages->have_posts() ) : ?>
 
@@ -220,7 +219,7 @@ class courtyard_rooms_widget extends WP_Widget {
                                   ?>
 
                                   <div class="swiper-slide">
-                                      <div class="pt-room-col">
+                                      <div class="pt-testimonial-col">
 
                                           <?php if( has_post_thumbnail() ) : ?>
                                               <figure>
@@ -230,13 +229,13 @@ class courtyard_rooms_widget extends WP_Widget {
                                               </figure>
                                           <?php endif; ?>
 
-                                          <div class="pt-room-cont transition35">
+                                          <div class="pt-testimonial-cont transition35">
                                               <a title="<?php the_title_attribute(); ?>" href="<?php the_permalink(); ?>"><i class="pt-arrow-right transition5"></i></a>
                                               <h3><a title="<?php the_title_attribute(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 
                                               <p><?php echo wp_trim_words( get_the_excerpt(), 22, '' ); ?></p>
-                                          </div><!-- .pt-room-cont -->
-                                      </div><!-- .pt-room-col -->
+                                          </div><!-- .pt-testimonial-cont -->
+                                      </div><!-- .pt-testimonial-col -->
                                   </div><!-- .swiper-slide -->
 
                               <?php endwhile;
@@ -248,8 +247,8 @@ class courtyard_rooms_widget extends WP_Widget {
 
                       <?php if ( !empty( $button_text ) ) : ?>
 
-                          <div class="pt-rooms-more">
-                              <div class="pt-rooms-more-holder">
+                          <div class="pt-testimonials-more">
+                              <div class="pt-testimonials-more-holder">
                                 <?php if ( $countPosts > 3 ) : ?>
                                   <i class="pt-arrow-left transition35"></i>
                                 <?php endif; ?>
@@ -265,7 +264,7 @@ class courtyard_rooms_widget extends WP_Widget {
               </div><!-- .col-md-12 -->
           </div><!-- .row -->
         </div><!-- .container -->
-      </div><!-- .pt-room-sec -->
+      </div><!-- .pt-testimonial-sec -->
 
       <?php echo $args['after_widget'];
       ob_end_flush();

@@ -168,5 +168,22 @@ jQuery(window).load(function() {
 				speed: 800
 			});
 		});
+
+		// Testimonial Slider
+		jQuery('.pt-testimonials-section').each(function(index, element){
+			var container  = jQuery(this).find('.pt-testimonials-slider');
+			var nextButton = jQuery(this).find('.pt-testimonials-more .pt-arrow-right');
+			var prevButton = jQuery(this).find('.pt-testimonials-more .pt-arrow-left');
+
+			var pt_testimonials_slider = new Swiper(container, {
+				nextButton: nextButton,
+				prevButton: prevButton,
+				spaceBetween: 30,
+				preventClicks: false,
+				slidesPerView: courtyard_services_slider_num,
+				touchEventsTarget: 'swiper-wrapper',
+				speed: 800
+			});
+		});
 	}
 });
