@@ -128,7 +128,7 @@ class courtyard_packages_widget extends WP_Widget
 
         global $post, $duplicate_posts;
         $title = apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : '');
-        $pt_package_limit = isset($instance['package_limit']) ? $instance['package_limit'] : '';
+        $pt_package_limit = isset($instance['package_limit']) ? $instance['package_limit'] : '5';
         $sub_title = isset($instance['sub_title']) ? $instance['sub_title'] : '';
         $background_color = isset($instance['background_color']) ? $instance['background_color'] : null;
 
@@ -176,9 +176,11 @@ class courtyard_packages_widget extends WP_Widget
 
                     <div class="col-md-12">
 
-                        <?php $first_post = true; ?>
+                        <?php if ( $get_featured_pages->have_posts() && !empty( $pt_package_pages ) ) : ?>
 
-                        <?php if ($get_featured_pages->have_posts()) : ?>
+                            <?php 
+                            $pt_count = 1;
+                            ?>
 
                             <?php while ($get_featured_pages->have_posts()) : $get_featured_pages->the_post();
                                 $duplicate_posts[] = $post->ID;
@@ -186,9 +188,8 @@ class courtyard_packages_widget extends WP_Widget
                                 $image_path     = wp_get_attachment_image_src( $image_id, 'courtyard-400x300', true );
                                 $image_alt      = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
                                 $alt            = !empty( $image_alt ) ? $image_alt : the_title_attribute( 'echo=0' ) ;
-                                if ($first_post) {
+                                if ($pt_count == 1 ) {
                                     $image_path = wp_get_attachment_image_src($image_id, 'courtyard-600x450', true);
-                                    $first_post = false;
                                 }
                                 ?>
 
@@ -211,7 +212,7 @@ class courtyard_packages_widget extends WP_Widget
                                     </div><!-- .pt-holiday-packages-cont -->
                                 </div><!-- .pt-holiday-packages-col -->
 
-                            <?php endwhile;
+                            <?php $pt_count++; endwhile;
                             // Reset Post Data
                             wp_reset_postdata(); ?>
 

@@ -4,9 +4,9 @@
  */
 class Courtyard_About_Widget extends WP_Widget {
     function __construct() {
-        $widget_ops = array( 'classname' => 'pt-about-section', 'description' => esc_html__( 'Display page as author details.', 'courtyard' ) );
+        $widget_ops = array( 'classname' => 'pt-about-section', 'description' => esc_html__( 'Show a single page.', 'courtyard' ) );
         $control_ops = array( 'width' => 200, 'height' =>250 );
-        parent::__construct( false, $name = esc_html__( 'PT: About', 'courtyard' ), $widget_ops, $control_ops);
+        parent::__construct( false, $name = esc_html__( 'PT: About Me', 'courtyard' ), $widget_ops, $control_ops);
     }
 
     function form( $instance ) {
@@ -130,7 +130,7 @@ class Courtyard_About_Widget extends WP_Widget {
 
                             <?php while ($get_featured_pages->have_posts()) : $get_featured_pages->the_post();
                                 $image_id = get_post_thumbnail_id();
-                                $image_path = wp_get_attachment_image_src( $image_id, 'thumbnail', true );
+                                $image_path = wp_get_attachment_image_src( $image_id, 'courtyard-600x450', true );
                                 $image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
                                 $alt = !empty( $image_alt ) ? $image_alt : the_title_attribute( 'echo=0' ) ;
                                 ?>
