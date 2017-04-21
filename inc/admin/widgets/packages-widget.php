@@ -71,13 +71,14 @@ class courtyard_packages_widget extends WP_Widget
 
                 <div class="pt-admin-input-label">
                     <label
-                    for="<?php echo $this->get_field_id('package_limit'); ?>"><?php esc_html_e('Limit', 'courtyard'); ?></label>
+                    for="<?php echo $this->get_field_id('package_limit'); ?>"><?php esc_html_e('Count', 'courtyard'); ?></label>
                 </div><!-- .pt-admin-input-label -->
 
                 <div class="pt-admin-input-holder">
                     <input type="number" min="1" max="50" id="<?php echo $this->get_field_id('package_limit'); ?>"
                        name="<?php echo $this->get_field_name('package_limit'); ?>"
                        value="<?php echo esc_attr($instance['package_limit']); ?>">
+                    <em><?php esc_html_e('Number of packages to display.', 'courtyard'); ?></em>
                 </div><!-- .pt-admin-input-holder -->
 
                 <div class="clear"></div>

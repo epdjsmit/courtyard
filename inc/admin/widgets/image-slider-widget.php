@@ -60,7 +60,7 @@ class courtyard_image_slider_widget extends WP_Widget
                     <input type="number" min="1" max="30" id="<?php echo $this->get_field_id('slide_no'); ?>"
                        name="<?php echo $this->get_field_name('slide_no'); ?>"
                        value="<?php echo esc_attr($instance['slide_no']); ?>">
-                    <em><?php esc_html_e('Number of slide to display.', 'courtyard'); ?></em>
+                    <em><?php esc_html_e('Number of slides to display.', 'courtyard'); ?></em>
                 </div><!-- .pt-admin-input-holder -->
 
                 <div class="clear"></div>

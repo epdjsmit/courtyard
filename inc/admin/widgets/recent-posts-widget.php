@@ -106,7 +106,7 @@ class courtyard_recent_posts_widget extends WP_Widget
 
                 <div class="pt-admin-input-label">
                     <label
-                    for="<?php echo $this->get_field_id('post_limit'); ?>"><?php esc_html_e('Limit', 'courtyard'); ?></label>
+                    for="<?php echo $this->get_field_id('post_limit'); ?>"><?php esc_html_e('Count', 'courtyard'); ?></label>
                 </div><!-- .pt-admin-input-label -->
 
                 <div class="pt-admin-input-holder">
@@ -114,6 +114,7 @@ class courtyard_recent_posts_widget extends WP_Widget
                        name="<?php echo $this->get_field_name('post_limit'); ?>"
                        value="<?php echo esc_attr($instance['post_limit']); ?>">
                 </div><!-- .pt-admin-input-holder -->
+                <em><?php esc_html_e('Number of posts to display.', 'courtyard'); ?></em>
 
                 <div class="clear"></div>
  
