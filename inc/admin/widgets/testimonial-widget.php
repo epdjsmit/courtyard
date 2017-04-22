@@ -15,7 +15,7 @@ class Courtyard_Testimonials_Widget extends WP_Widget {
         (array) $instance, array(
           'title'             => '',
           'sub_title'         => '',
-          'testimonial_limit'        => '5',
+          'testimonial_limit' => '5',
           'button_text'       => esc_html__( 'view all', 'courtyard'),
           'button_url'        => '#',
           'background_color'  => '',
