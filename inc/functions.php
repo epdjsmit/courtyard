@@ -4,56 +4,99 @@
  *
  * @package Courtyard
  */
-$courtyard_theme = wp_get_theme();
-$courtyard_version = $courtyard_theme->get( 'Version' );
+/* --------------------------------------------- 
+# Generate Asset URL depend on SCRIPT_DEBUG.
+---------------------------------------------*/
+if( !function_exists( 'courtyard_asset_url' ) ) {
+    function courtyard_asset_url( $file_name = '', $type = '', $has_rtl_support = false, $dir_path = '' ) {
 
-/**
- * Enqueue scripts and styles.
- */
+        switch( $dir_path ) {
+            case 'vendor':
+                $unmin_url     = '/assets/vendor/' . $type . '/' . $file_name . '.' . $type;
+                $min_url       = '/assets/vendor/' . $type . '/' . $file_name . '.min.' . $type;
+                break;
+
+            case 'admin':
+                $unmin_url     = '/inc/assets/' . $type . '/' . $file_name . '.' . $type;
+                $min_url       = '/inc/assets/' . $type . '/min/' . $file_name . '.min.' . $type;
+                break;
+
+            default:
+                $unmin_url     = '/assets/' . $type . '/' . $file_name . '.' . $type;
+                $min_url       = '/assets/' . $type . '/min/' . $file_name . '.min.' . $type;
+                break;
+        }
+
+        if( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+
+            $asset_url = $unmin_url; // Load unminified assets.
+
+        } else {
+
+            $asset_url = $min_url; // Load minified assets.
+        }
+
+        return COURTYARD_URI . $asset_url;
+    }
+}
+
+/* ---------------------------------------------
+# Enqueue Front-End scripts and styles.
+---------------------------------------------*/
 function courtyard_scripts() {
-
-    global $courtyard_version;
 
     // Add custom fonts, used in the main stylesheet.
     wp_enqueue_style( 'courtyard-fonts', courtyard_fonts_url(), array(), null );
 
-    // Load the Bootstrap library according to customizer control option.
-    if ( get_theme_mod( 'courtyard_optimize_bootstrap_activate', '1' ) == 1 ) {
-        
+    if( get_theme_mod( 'courtyard_optimize_bootstrap_activate', '1' ) == 1 ) {
+
         // Enqueue Optimize Bootstrap Grid
-        wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap.optimized.min.css', array(), '3.3.7', '' );
-    } else {
+        wp_enqueue_style( 'bootstrap', courtyard_asset_url( 'bootstrap.optimized', 'css', '', 'vendor' ) );
+        
+    } 
+    else {
 
         // Enqueue Bootstrap Grid
-        wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), '3.3.7', '' );
+        wp_enqueue_style( 'bootstrap', courtyard_asset_url( 'bootstrap', 'css', '', 'vendor' ) );
     }
 
-    // Enqueue animate css
-    wp_enqueue_style( 'animate', get_template_directory_uri() . '/css/animate.min.css', array(), '3.5.1', '' );
+    // Enqueue Animate
+    wp_enqueue_style( 'animate', courtyard_asset_url( 'animate', 'css', '', 'vendor' ) );
 
     // Enqueue FontAwesome
-    wp_enqueue_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css', array(), '4.7.0', '' );
-
-    // Enqueue elegant_font
-    wp_enqueue_style( 'elegant-font', get_template_directory_uri() . '/css/elegant-font.custom.css', array(), '', '' );
-
-    // Enqueue Swiper.css
-    wp_enqueue_style( 'swiper', get_template_directory_uri() . '/css/swiper.min.css', array(), '3.4.0', '' );
-
-    wp_enqueue_style( 'courtyard-style', get_stylesheet_uri() );
+    wp_enqueue_style( 'font-awesome', courtyard_asset_url( 'font-awesome', 'css', '', 'vendor' ) );
 
     // Enqueue Swiper
-    wp_enqueue_script( 'swiper', get_template_directory_uri() . '/js/swiper.jquery.min.js', array( 'jquery' ), '3.4.0', true );
+    wp_enqueue_style( 'swiper', courtyard_asset_url( 'swiper', 'css', '', 'vendor' ) );
 
-    // Custom JS
-    wp_enqueue_script( 'courtyard-custom', get_template_directory_uri() . '/js/custom.js', array( 'jquery' ), $courtyard_version, true );
-
-    wp_enqueue_script( 'courtyard-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
-
-    wp_enqueue_script( 'courtyard-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
+    wp_enqueue_script( 'swiper', courtyard_asset_url( 'swiper.jquery', 'js', '', 'vendor' ) );
 
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
         wp_enqueue_script( 'comment-reply' );
+    }
+
+    if( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) { // Unminified
+
+        // Enqueue elegant_font
+        wp_enqueue_style( 'elegant-font', COURTYARD_URI . '/assets/css/elegant-font.custom.css', array(), COURTYARD_VERSION, true );
+
+        // Enqueue Individual Styles and Scripts.
+        wp_enqueue_style( 'courtyard-style', get_stylesheet_uri() );
+
+        wp_enqueue_script( 'courtyard-navigation', COURTYARD_URI . '/assets/js/navigation.js', array( 'jquery' ), COURTYARD_VERSION, true);
+
+        wp_enqueue_script( 'courtyard-skip-link-focus-fix', COURTYARD_URI . '/assets/js/skip-link-focus-fix.js', array( 'jquery' ), COURTYARD_VERSION, true);
+
+        wp_enqueue_script( 'courtyard-custom', COURTYARD_URI . '/assets/js/custom.js', array( 'jquery' ), COURTYARD_VERSION, true);
+
+
+    } else { // Minified
+
+        // Enqueue Combined Single Style and Script.
+        wp_enqueue_style('elegant-font', COURTYARD_URI . '/assets/css/min/elegant-font.min.css');
+        wp_enqueue_style('courtyard-core-css', COURTYARD_URI . '/assets/css/min/style.min.css');
+
+        wp_enqueue_script('courtyard-core-js', COURTYARD_URI . '/assets/js/min/style.min.js', array( 'jquery' ), COURTYARD_VERSION, true);
     }
 }
 add_action( 'wp_enqueue_scripts', 'courtyard_scripts' );
@@ -96,32 +139,34 @@ function courtyard_fonts_url() {
 endif;
 
 /*--------------------------------------------------------------------------------------------------*/
-/**
- * Added customizer scripts
- */
+/* ---------------------------------------------
+# Enqueue Admin Scripts and Styles.
+---------------------------------------------*/
 function courtyard_admin_scripts( ) {
-    global $courtyard_version;
+    $screen    = get_current_screen();
+    $screen_id = $screen ? $screen->id : '';
 
-    $pt_cScreen = get_current_screen();
-
-    if( $pt_cScreen->id === "customize" || $pt_cScreen->id === "widgets" ) {
-        // Run some code, only on the admin customize and wigets page
-        wp_enqueue_style( 'courtyard-admin-style', get_template_directory_uri() .'/css/admin/admin-style.css', $courtyard_version, '' );
+    if( 'widgets' === $screen_id || 'customize' === $screen_id ) {
+        // Enqueue Admin CSS
+        wp_enqueue_style( 'courtyard-admin-style-css', courtyard_asset_url( 'admin-style', 'css', '', 'admin' ) );
 
         // Image Uploader
         wp_enqueue_media();
-        wp_enqueue_script( 'courtyard-image-uploader', get_template_directory_uri() . '/js/admin/image-uploader.js', false, $courtyard_version, true );
 
         // Color Picker
-        wp_enqueue_style( 'wp-color-picker' );     
-        wp_enqueue_script( 'courtyard-color-picker', get_template_directory_uri() . '/js/admin/color-picker.js', array( 'wp-color-picker' ), $courtyard_version, true );
+        wp_enqueue_style( 'wp-color-picker' );
 
-        wp_enqueue_script( 'courtyard-customizer-script', get_template_directory_uri() .'/js/admin/customizer-scripts.js', array( 'jquery' ), $courtyard_version, true  );
+        // Sortable UI
+        wp_enqueue_script( 'jquery-ui-sortable' );
+
+        wp_enqueue_script( 'envy-customizer-controls', courtyard_asset_url( 'customizer-controls', 'js', '', 'admin' ), array( 'jquery', 'customize-controls', 'wp-color-picker' ), COURTYARD_VERSION, true  );
+
     }
 
-    if( $pt_cScreen->id === "page" ) {
+    if( 'page' === $screen_id ) {
         // Enqueue Custom Admin Script, only on the admin Page page.
-        wp_enqueue_script( 'courtyard-admin-script', get_template_directory_uri() .'/js/admin/admin-scripts.js', array( 'jquery' ), $courtyard_version, true );
+        wp_enqueue_script( 'courtyard-admin-script', courtyard_asset_url( 'admin-scripts', 'js', '', 'admin'), array( 'jquery' ), COURTYARD_VERSION, true );
+
     }
 }
 add_action('admin_enqueue_scripts', 'courtyard_admin_scripts');
@@ -131,10 +176,12 @@ add_action('admin_enqueue_scripts', 'courtyard_admin_scripts');
 /**
 * Footer credits
 */
-function courtyard_footer_credits() {
-    printf( __( 'Copyright &copy; %1$s %3$s. %2$s.', 'courtyard' ), date('Y'), esc_html__('All rights reserved','courtyard'), '<a href="'.esc_url( home_url( '/' ) ) .'">' . esc_html( get_bloginfo( 'name', 'display' ) ) . '</a>' );
-    echo '<span class="sep"> | </span>';
-    printf( __( 'Designed by %2$s', 'courtyard' ), '', '<a href="'.esc_url( __('http://precisethemes.com/','courtyard' ) ) .'" rel="designer" target="_blank">Precise Themes</a>' );
+if( !function_exists( 'courtyard_footer_credits') ) {
+    function courtyard_footer_credits() {
+        printf( __( 'Copyright &copy; %1$s %3$s. %2$s.', 'courtyard' ), date('Y'), esc_html__('All rights reserved','courtyard'), '<a href="'.esc_url( home_url( '/' ) ) .'">' . esc_html( get_bloginfo( 'name', 'display' ) ) . '</a>' );
+        echo '<span class="sep"> | </span>';
+        printf( __( 'Designed by %2$s', 'courtyard' ), '', '<a href="'.esc_url( __('http://precisethemes.com/','courtyard' ) ) .'" rel="designer" target="_blank">Precise Themes</a>' );
+    }
 }
 add_action( 'courtyard_footer', 'courtyard_footer_credits' );
 
@@ -689,7 +736,7 @@ if ( ! function_exists ( 'courtyard_related_pages_listing' ) ) :
                 if ( $get_featured_pages->have_posts() ) { ?>
 
                     <aside id="pt-related-lists" class="widget widget_related_room">     
-                        <h4 class="widget-title"><?php esc_html_e( 'Related', 'courtyard');?></h4>
+                        <h4 class="widget-title"><?php echo esc_html__( 'Related', 'courtyard');?></h4>
 
                         <?php while( $get_featured_pages->have_posts() ) : $get_featured_pages->the_post();
 

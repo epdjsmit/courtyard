@@ -6,6 +6,15 @@
  *
  * @package courtyard
  */
+/**
+ * Define constants
+ */
+$theme_options = wp_get_theme();
+$theme_version = $theme_options->get( 'Version' );
+define( 'COURTYARD_VERSION', $theme_version );
+define( 'COURTYARD_URI', get_template_directory_uri() );
+define( 'COURTYARD_DIR', get_template_directory() );
+
 global $duplicate_posts;
 $duplicate_posts = array();
 
@@ -91,7 +100,7 @@ function courtyard_setup() {
 
 	// Set up the WordPress core custom background feature.
 	add_theme_support( 'custom-background', apply_filters( 'courtyard_custom_background_args', array(
-		'default-color' => 'ffffff',
+		'default-color' => '#ffffff',
 		'default-image' => '',
 	) ) );
 
@@ -117,62 +126,62 @@ add_action( 'after_setup_theme', 'courtyard_content_width', 0 );
 /**
  * Implement the Custom Header feature.
  */
-require get_template_directory() . '/inc/custom-header.php';
+require COURTYARD_DIR . '/inc/custom-header.php';
 
 /**
  * Custom template tags for this theme.
  */
-require get_template_directory() . '/inc/template-tags.php';
+require COURTYARD_DIR . '/inc/template-tags.php';
 
 /**
  * Custom functions that act independently of the theme templates.
  */
-require get_template_directory() . '/inc/extras.php';
+require COURTYARD_DIR . '/inc/extras.php';
 
 /**
  * Customizer additions.
  */
-require get_template_directory() . '/inc/admin/customizer/customizer.php';
+require COURTYARD_DIR . '/inc/customizer/customizer.php';
 
 /**
  * Customizer Styles
  */
-require get_template_directory() . '/inc/admin/customizer/customizer-styles.php';
+require COURTYARD_DIR . '/inc/customizer/customizer-styles.php';
 
 /**
  * Metabox Custom function
  */
-require get_template_directory() . '/inc/admin/meta-boxes/class-meta-box.php';
+require COURTYARD_DIR . '/inc/meta-boxes/class-meta-box.php';
 
 /**
  * Load theme custom widgets and register custom widget sidebar.
  */
-require get_template_directory() . '/inc/admin/widgets/widgets.php';
+require COURTYARD_DIR . '/inc/widgets/widgets.php';
 
 /**
  * Load Jetpack compatibility file.
  */
-require get_template_directory() . '/inc/jetpack.php';
+require COURTYARD_DIR . '/inc/compatibility/jetpack.php';
 
 /**
  * Load courtyard extra/custom functions file
  */
-require get_template_directory() . '/inc/functions.php';
+require COURTYARD_DIR . '/inc/functions.php';
 
 /**
- * Load woocommerce functions file
+ * Load WooCommerce functions file
  */
-require get_template_directory() . '/woocommerce/woocommerce.php';
+require COURTYARD_DIR . '/inc/compatibility/woocommerce/woocommerce.php';
 
 /**
  * Load Demo Files .
  */
-require get_template_directory() . '/inc/demo-content/setup.php';
+require COURTYARD_DIR . '/inc/demo-content/setup.php';
 
 /**
  * Load TGM Activation file.
  */
-require get_template_directory() . '/inc/class-tgm-plugin-activation.php';
+require COURTYARD_DIR . '/inc/class-tgm-plugin-activation.php';
 
 add_action( 'tgmpa_register', 'courtyard_register_required_plugins' );
 /**

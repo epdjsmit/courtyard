@@ -76,7 +76,7 @@ if ( ! function_exists( 'courtyard_entry_footer' ) ) :
 function courtyard_entry_footer() {
 
 	/* translators: used between list items, there is a space after the comma */
-	$separate_meta = __( ', ', 'courtyard' );
+	$separate_meta = ',';
 
 	// Get Categories for posts.
 	$categories_list = get_the_category_list( $separate_meta );

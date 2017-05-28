@@ -1,137 +1,17 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Courtyard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-28 06:24+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"POT-Creation-Date: 2017-05-28 07:03+0000\n"
+"PO-Revision-Date: 2017-05-28 07:03+0000\n"
+"Last-Translator: admin <rabindra.tharu.np@gmail.com>\n"
+"Language-Team: French (France)\n"
+"Language: fr-FR\n"
+"Plural-Forms: nplurals=2; plural=n > 1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
-
-#: 404.php:17
-msgid "Oops! That page can&rsquo;t be found."
-msgstr ""
-
-#: 404.php:21
-msgid ""
-"It looks like nothing was found at this location. Maybe try one of the links "
-"below or a search?"
-msgstr ""
-
-#: archive.php:45 index.php:49 search.php:42
-msgid "&laquo; Previous"
-msgstr ""
-
-#: archive.php:46 index.php:50 search.php:43
-msgid "Next &raquo;"
-msgstr ""
-
-#: archive.php:47 index.php:51 search.php:44 inc/functions.php:616
-#: inc/widgets/about-widget.php:42
-msgid "Page"
-msgstr ""
-
-#: comments.php:29
-msgid "No Responses"
-msgstr ""
-
-#: comments.php:29
-msgid "One Response"
-msgstr ""
-
-#: comments.php:29
-msgid "% Responses"
-msgstr ""
-
-#: comments.php:34 comments.php:55
-msgid "Comment navigation"
-msgstr ""
-
-#: comments.php:37 comments.php:58
-msgid "Older Comments"
-msgstr ""
-
-#: comments.php:38 comments.php:59
-msgid "Newer Comments"
-msgstr ""
-
-#: comments.php:72
-msgid "Comments are closed."
-msgstr ""
-
-#: footer.php:39 inc/customizer/customizer.php:641
-msgid "Back to Top"
-msgstr ""
-
-#: functions.php:86
-msgid "Primary"
-msgstr ""
-
-#: functions.php:238
-msgid "Install Required Plugins"
-msgstr ""
-
-#: functions.php:239
-msgid "Install Plugins"
-msgstr ""
-
-#. %s: plugin name.
-#: functions.php:241
-#, php-format
-msgid "Installing Plugin: %s"
-msgstr ""
-
-#. %s: plugin name.
-#: functions.php:243
-#, php-format
-msgid "Updating Plugin: %s"
-msgstr ""
-
-#: functions.php:244
-msgid "Something went wrong with the plugin API."
-msgstr ""
-
-#: functions.php:281
-msgid "Begin installing plugin"
-msgid_plural "Begin installing plugins"
-msgstr[0] ""
-msgstr[1] ""
-
-#: functions.php:286
-msgid "Begin updating plugin"
-msgid_plural "Begin updating plugins"
-msgstr[0] ""
-msgstr[1] ""
-
-#: functions.php:291
-msgid "Begin activating plugin"
-msgid_plural "Begin activating plugins"
-msgstr[0] ""
-msgstr[1] ""
-
-#: functions.php:296
-msgid "Return to Required Plugins Installer"
-msgstr ""
-
-#: functions.php:297
-msgid "Plugin activated successfully."
-msgstr ""
-
-#: functions.php:298
-msgid "The following plugin was activated successfully:"
-msgstr ""
-
-#. 1: plugin name.
-#: functions.php:300
-#, php-format
-msgid "No action taken. Plugin %1$s was already active."
-msgstr ""
+"X-Generator: Loco - https://localise.biz/"
 
 #. 1: plugin name.
 #: functions.php:302
@@ -217,20 +97,12 @@ msgstr ""
 msgid "All Templates"
 msgstr ""
 
-#: inc/functions.php:449 inc/compatibility/woocommerce/woocommerce.php:62
-msgid "Home"
-msgstr ""
-
 #: inc/functions.php:621
 msgid "Search results for: "
 msgstr ""
 
 #: inc/functions.php:626
 msgid "404 Error"
-msgstr ""
-
-#: inc/functions.php:739
-msgid "Related"
 msgstr ""
 
 #: inc/template-tags.php:29
@@ -817,10 +689,6 @@ msgstr ""
 msgid "Info: only page have thumbnail will show in image slide."
 msgstr ""
 
-#: inc/widgets/image-slider-widget.php:180
-msgid "Discover"
-msgstr ""
-
 #: inc/widgets/logo-widget.php:8
 msgid "Show your business patner logo."
 msgstr ""
@@ -968,7 +836,7 @@ msgstr ""
 
 #: inc/widgets/rooms-widget.php:85
 msgid "View All Rooms"
-msgstr ""
+msgstr "Voir toutes les chambres"
 
 #: inc/widgets/rooms-widget.php:94
 msgid "Botton URL"
@@ -1122,3 +990,136 @@ msgstr ""
 #. Author URI of the theme
 msgid "https://precisethemes.com/"
 msgstr ""
+
+#: 404.php:17
+msgid "Oops! That page can&rsquo;t be found."
+msgstr "Oops ! Cette page’t être trouvés."
+
+#: 404.php:21
+msgid ""
+"It looks like nothing was found at this location. Maybe try one of the links "
+"below or a search?"
+msgstr ""
+"Il semble que rien n'a été trouvé à cet endroit. Peut-être que l'un des "
+"liens ci-dessous ou une recherche ?"
+
+#: archive.php:45 index.php:49 search.php:42
+msgid "&laquo; Previous"
+msgstr "&Laquo ; Précédente"
+
+#: archive.php:46 index.php:50 search.php:43
+msgid "Next &raquo;"
+msgstr "&Suivante »"
+
+#: archive.php:47 index.php:51 search.php:44 inc/functions.php:616
+#: inc/widgets/about-widget.php:42
+msgid "Page"
+msgstr "La page"
+
+#: comments.php:29
+msgid "No Responses"
+msgstr "Pas de réponses"
+
+#: comments.php:29
+msgid "One Response"
+msgstr "Une réponse"
+
+#: comments.php:29
+msgid "% Responses"
+msgstr "Réponses  %"
+
+#: comments.php:34 comments.php:55
+msgid "Comment navigation"
+msgstr "Navigation Commentaire"
+
+#: comments.php:37 comments.php:58
+msgid "Older Comments"
+msgstr "Commentaires plus anciens"
+
+#: comments.php:38 comments.php:59
+msgid "Newer Comments"
+msgstr "Commentaires récents"
+
+#: comments.php:72
+msgid "Comments are closed."
+msgstr "Les commentaires sont fermés."
+
+#: footer.php:39 inc/customizer/customizer.php:641
+msgid "Back to Top"
+msgstr "Haut de page"
+
+#: functions.php:86
+msgid "Primary"
+msgstr "Primary"
+
+#: functions.php:238
+msgid "Install Required Plugins"
+msgstr "Installer les plugins nécessaires"
+
+#: functions.php:239
+msgid "Install Plugins"
+msgstr "Installer des plugins"
+
+#. %s: plugin name.
+#: functions.php:241
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr "L'installation de plugin :  %s"
+
+#. %s: plugin name.
+#: functions.php:243
+#, php-format
+msgid "Updating Plugin: %s"
+msgstr "La mise à jour de Plugin :  %s"
+
+#: functions.php:244
+msgid "Something went wrong with the plugin API."
+msgstr "Il y a eu un problème avec l'API des plugins."
+
+#: functions.php:281
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] "Commencer l'installation de plugin"
+msgstr[1] "Commencer l'installation de plug-ins"
+
+#: functions.php:286
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] "Commencer la mise à jour plugin"
+msgstr[1] "Commencer la mise à jour des plugins"
+
+#: functions.php:291
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] "Commencer l'activation plugin"
+msgstr[1] "Commencer l'activation de plugins"
+
+#: functions.php:296
+msgid "Return to Required Plugins Installer"
+msgstr "Retour à l'installation des plugins nécessaires"
+
+#: functions.php:297
+msgid "Plugin activated successfully."
+msgstr "Plugin activé avec succès."
+
+#: functions.php:298
+msgid "The following plugin was activated successfully:"
+msgstr "Le plugiciel a été activé avec succès :"
+
+#. 1: plugin name.
+#: functions.php:300
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr "Aucune mesure n'a été prise. Module  %1$s était déjà actif."
+
+#: inc/functions.php:449 inc/compatibility/woocommerce/woocommerce.php:62
+msgid "Home"
+msgstr "Accueil"
+
+#: inc/functions.php:739
+msgid "Related"
+msgstr "Related Fr"
+
+#: inc/widgets/image-slider-widget.php:180
+msgid "Discover"
+msgstr "Découvrez"

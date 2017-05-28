@@ -1,22 +1,20 @@
-# Editors
-project.xml
-project.properties
-/nbproject/private/
-.buildpath
-.project
-.settings*
-.idea
+# ignore PHPStorm extra directories
+.idea/
 
-# Sass
+# Leave node_modules from git
+node_modules/
+
+# sass cache
 .sass-cache
-.sass-cache/*
 
-# Grunt
-/node_modules/
-/deploy/
+# map files
+*.map
 
-# OS X metadata
-.DS_Store
+# Skip package file from versoning
+courtyard.zip
 
-# Windows junk
-Thumbs.db
+# Avoid PHPCS report files
+phpcs-summary.log
+phpcs-full.log
+
+.editorconfig
